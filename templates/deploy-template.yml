@@ -1,0 +1,19 @@
+stages:
+- stage: Deploy
+  jobs:
+  - deployment: DeployJob
+    displayName: 'Deploy to Azure App Service'
+    pool:
+      vmImage: 'windows-latest'
+    environment: 'your-azure-app-service-environment'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Azure Web App Deploy'
+            inputs:
+              azureSubscription: 'your-azure-subscription'
+              appName: 'your-app-name'
+              package: '$(Pipeline.Workspace)/**/*.zip'
+              deploymentMethod: 'auto'
