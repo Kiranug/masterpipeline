@@ -1,0 +1,9 @@
+trigger:
+  branches:
+    include:
+      - main
+
+stages:
+- template: templates/build-template.yml
+- template: templates/test-template.yml
+- template: templates/deploy-template.yml
