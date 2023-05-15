@@ -1,10 +1,33 @@
+parameters:
+  - name: buildConfiguration
+    type: string
+    default: 'Release'
+
 stages:
 - stage: Build
   jobs:
   - job: BuildJob
     displayName: 'Build Job'
+    pool:
+      vmImage: 'windows-latest'
     steps:
-    - script: |
-        # Add your build commands here
-        echo Building the application
-      displayName: 'Build'
+    - checkout: self
+
+    - task: UseDotNet@2
+      displayName: 'Install .NET SDK'
+      inputs:
+        version: '3.x'
+        includePreviewVersions: true
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore dependencies'
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build project'
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
