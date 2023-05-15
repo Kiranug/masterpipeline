@@ -1,0 +1,10 @@
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    displayName: 'Build Job'
+    steps:
+    - script: |
+        # Add your build commands here
+        echo Building the application
+      displayName: 'Build'
